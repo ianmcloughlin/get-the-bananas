@@ -1,9 +1,5 @@
-# get-the-bananas
+# Get The Bananas 🍌
 
-A Python-based project repository.
+A Get The Bananas Production.
 
-## Website
-
-Visit our GitHub Pages site: [https://ianmcloughlin.github.io/get-the-bananas](https://ianmcloughlin.github.io/get-the-bananas)
-
-For information about the GitHub Pages setup, see [GITHUB_PAGES.md](GITHUB_PAGES.md).
+[https://ianmcloughlin.github.io/get-the-bananas](https://ianmcloughlin.github.io/get-the-bananas)
