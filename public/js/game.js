@@ -1,70 +1,84 @@
-// The snake moves along a grid, one space at a time
-// The grid is smaller than the canvas, and its dimensions
-//  are stored in these variables
-let gridWidth = 30;
-let gridHeight = 30;
-
-let gameStarted = false;
-
-// How many segments snake starts with
-let startingSegments = 10;
-
-// Starting coordinates for first segment
-let xStart = 0;
-let yStart = 15;
-
-// Starting direction of motion
-let startDirection = 'right';
-
-// Current direction of motion
-let direction = startDirection;
-
-// The snake is divided into small segments,
-// stored as vectors in this array
-let segments = [];
-
-let score = 0;
-let highScore;
-
-// The fruit's position is stored as a vector
-// in this variable
-let fruit;
-
 function setup() {
   createCanvas(500, 500);
-
-  // Adjust frame rate to set movement speed
-  frameRate(10);
 
   textAlign(CENTER, CENTER);
   textSize(2);
 
-  // Check for saved high score in local browser storage
-  // If no score has been stored, this will be undefined
-  highScore = getItem('high score');
-
-  describe(
-    'A reproduction of the arcade game Snake, in which a snake, represented by a green line on a black background, is controlled by the arrow keys. Users move the snake toward a fruit, represented by a red dot, but the snake must not hit the sides of the window or itself.'
-  );
 }
 
 function draw() {
-  background(0);
+   background(220);
+  
+  // Center coordinates
+  let cx = width / 2;
+  let cy = height / 2;
+  let size = 200;
+  
+  // -- Animation Logic --
+  // Make the mouth open and close like Pacman using a sine wave
+  let mouthAngle = map(sin(frameCount * 0.15), -1, 1, 0, 0.5);
 
-  // Set scale so that the game grid fills canvas
-  scale(width / gridWidth, height / gridHeight);
-  if (gameStarted === false) {
-    showStartScreen();
-  } else {
-    // Shift over so that snake and fruit are still on screen
-    // when their coordinates are 0
-    translate(0.5, 0.5);
-    showFruit();
-    showSegments();
-    updateSegments();
-    checkForCollision();
-    checkForFruit();
-  }
+  // -- 1. THE MONKEY TAIL (Draw first so it appears behind) --
+  noFill();
+  stroke(180, 160, 40); // Darker yellow/brown for tail
+  strokeWeight(8);
+  beginShape();
+  vertex(cx - 80, cy + 50);
+  bezierVertex(cx - 150, cy + 50, cx - 180, cy - 50, cx - 120, cy - 80);
+  endShape();
+  
+  // -- 2. THE MONKEY EARS --
+  noStroke();
+  fill(255, 225, 53); // Minion Yellow
+  // Left Ear
+  circle(cx - size/2 + 20, cy - 30, 60); 
+  // Right Ear (slightly offset because of perspective)
+  circle(cx + size/4, cy - size/2 + 20, 60);
+  
+  // Inner Ears
+  fill(230, 200, 50); 
+  circle(cx - size/2 + 20, cy - 30, 30);
+  circle(cx + size/4, cy - size/2 + 20, 30);
+
+  // -- 3. THE BODY (Pacman Shape + Minion Color) --
+  fill(255, 225, 53); // Minion Yellow
+  noStroke();
+  
+  // We use the arc function to create the Pacman mouth
+  // The angles change based on the 'mouthAngle' variable calculated above
+  arc(cx, cy, size, size, mouthAngle, TWO_PI - mouthAngle, PIE);
+
+  // -- 4. MINION OVERALLS --
+  // A blue chord shape at the bottom to represent the pants
+  fill(45, 120, 190); // Denim Blue
+  arc(cx, cy, size, size, PI * 0.2, PI * 0.8, CHORD);
+
+  // -- 5. MINION GOGGLE & EYE --
+  // The Strap
+  stroke(40);
+  strokeWeight(12);
+  line(cx - size/2 + 10, cy - 20, cx + size/2 - 10, cy - 20);
+  
+  // The Goggle Frame (Silver)
+  noStroke();
+  fill(150); 
+  circle(cx, cy - 20, 90);
+  
+  // The Eyeball (White)
+  fill(255);
+  circle(cx, cy - 20, 70);
+  
+  // The Iris (Brown)
+  fill(100, 50, 20);
+  circle(cx, cy - 20, 30);
+  
+  // The Pupil (Black)
+  fill(0);
+  circle(cx, cy - 20, 12);
+  
+  // Goggle Reflection (Small white dot for liveliness)
+  fill(255);
+  circle(cx + 10, cy - 30, 8);
 }
 
 function showStartScreen() {
