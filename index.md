@@ -1,26 +1,28 @@
----
-layout: default
-title: Home
----
+<!DOCTYPE html>
+<html lang="en">
 
-# Welcome to Get The Bananas! 🍌
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Sketch</title>
 
-This is the project website for the **get-the-bananas** repository.
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
 
-## About This Project
+<body></body>
 
-Get The Bananas is a Python-based project repository. This site serves as the landing page and documentation hub for the project.
+<script src="https://cdn.jsdelivr.net/npm/p5@1/lib/p5.min.js" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/p5@1/lib/addons/p5.sound.min.js" crossorigin="anonymous"></script> -->
+<!-- <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script> -->
 
-## Getting Started
+<!-- import the javascript sketch file -->
+<script src="./game.js"></script>
 
-To get started with this project, visit the [GitHub repository](https://github.com/ianmcloughlin/get-the-bananas).
-
-## Resources
-
-- [GitHub Repository](https://github.com/ianmcloughlin/get-the-bananas)
-- [Issues](https://github.com/ianmcloughlin/get-the-bananas/issues)
-- [Pull Requests](https://github.com/ianmcloughlin/get-the-bananas/pulls)
-
----
-
-*This site is powered by [GitHub Pages](https://pages.github.com/) and built with [Jekyll](https://jekyllrb.com/).*
+</html>
