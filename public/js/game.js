@@ -6,9 +6,19 @@ class Player {
     this.x = x;
     this.y = y;
     this.r = 50;
+    this.facing = 1;
+    this.vy = 0;
+    this.gravity = 0.7;
+    this.jumpForce = 12;
   }
 
   draw() {
+    push();
+    if (this.facing === -1) {
+      translate(2 * this.x, 0);
+      scale(-1, 1);
+    }
+
     // Tail.
     noFill();
     stroke(20, 20, 220);
@@ -52,22 +62,36 @@ class Player {
     circle(me.x + (me.r / 10), me.y - (me.r/3), me.r/14);
     fill(255);
     circle(me.x + (me.r / 10), me.y - (me.r/3), me.r/20);
+
+    pop();
   }
   left() {
+    this.facing = -1;
     if (this.x >= 0)
       this.x -= 10;
   }
   right() {
+    this.facing = 1;
     if (this.x <= width)
       this.x += 10;
   }
-  up() {
-    if (this.y >= 0)
-    this.y -= 10;
+
+  applyPhysics() {
+    this.vy += this.gravity;
+    this.y += this.vy;
+
+    const groundY = height - this.r / 2;
+    if (this.y > groundY) {
+      this.y = groundY;
+      this.vy = 0;
+    }
   }
-  down() {
-    if (this.y <= height)
-      this.y += 10;
+
+  jump() {  
+    const groundY = height - this.r / 2;
+    if (this.y >= groundY) {
+      this.vy = -this.jumpForce;
+    }
   }
 };
 
@@ -82,19 +106,16 @@ function setup() {
 
 function draw() {
   background(255, 0, 255);
-  me.draw();
+
   if (keyIsDown(LEFT_ARROW) === true) {
     me.left()
   }
   if (keyIsDown(RIGHT_ARROW) === true) {
     me.right()
   }
-  if (keyIsDown(UP_ARROW) === true) {
-    me.up()
-  }
-  if (keyIsDown(DOWN_ARROW) === true) {
-    me.down()
-  }
+
+  me.applyPhysics();
+  me.draw();
 }
 
 function showStartScreen() {
@@ -273,31 +294,10 @@ function updateFruitCoordinates() {
   fruit = createVector(x, y);
 }
 
-// When an arrow key is pressed, switch the snake's direction of movement,
-// but if the snake is already moving in the opposite direction,
-// do nothing.
 function keyPressed() {
-  switch (keyCode) {
-    case LEFT_ARROW:
-      if (direction !== 'right') {
-        direction = 'left';
-      }
-      break;
-    case RIGHT_ARROW:
-      if (direction !== 'left') {
-        direction = 'right';
-      }
-      break;
-    case UP_ARROW:
-      if (direction !== 'down') {
-        direction = 'up';
-      }
-      break;
-    case DOWN_ARROW:
-      if (direction !== 'up') {
-        direction = 'down';
-      }
-      break;
+  if (keyCode === UP_ARROW) {
+    me.jump();
+    return false;
   }
 }
 
